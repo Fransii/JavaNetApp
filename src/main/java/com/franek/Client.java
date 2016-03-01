@@ -5,12 +5,14 @@ import java.net.*;
 
 public class Client {
 	public static final int PORT = 50007;
-	public static final String HOST = "155.94.210.248";
+	public static final String HOST = "127.0.0.1";
 
 	public Socket sock;
 	public BufferedReader klaw;
 	public BufferedReader inp;
 	public PrintWriter outp;
+
+	public String nickName;
 
 	public void connect() throws IOException {
 		// nawiazanie polaczenia z serwerem
@@ -28,11 +30,15 @@ public class Client {
 
 	public void communication() throws IOException {
 		String tekst = "";
+
+		System.out.println("Whats your nickname ? :");
+		this.nickName = this.klaw.readLine();
+
 		do {
 			// komunikacja - czytanie danych z klawiatury i przekazywanie ich do
 			// strumienia
 
-			System.out.print("<Wysylamy:> ");
+			System.out.print("<Wysylamy (" + this.nickName + "):> ");
 			String str = this.klaw.readLine();
 			tekst = str;
 			this.outp.println(str);

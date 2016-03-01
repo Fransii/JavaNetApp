@@ -4,12 +4,6 @@ import java.io.IOException;
 
 public class ServerTest {
 
-
-	@SuppressWarnings("deprecation")
-	public void run() {
-
-	}
-
 	public static void main(String args[]) throws IOException {
 		try {
 
