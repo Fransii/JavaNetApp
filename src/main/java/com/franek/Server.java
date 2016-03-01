@@ -10,7 +10,7 @@ public class Server {
 
 	ServerSocket serv;
 	Socket sock;
-	List<ClientThread> socketList = new ArrayList<>();
+	List<ClientThread> socketList = new ArrayList<ClientThread>();
 
 	public void makeServerSocket() throws IOException {
 		// tworzenie gniazda serwerowego

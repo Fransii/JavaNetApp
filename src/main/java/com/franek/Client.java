@@ -5,7 +5,7 @@ import java.net.*;
 
 public class Client {
 	public static final int PORT = 50007;
-	public static final String HOST = "127.0.0.1";
+	public static final String HOST = "155.94.210.248";
 
 	public Socket sock;
 	public BufferedReader klaw;
