@@ -12,7 +12,7 @@ public class ClientTest {
             client.communication();
             client.closeConnection();
         } catch (IOException e) {
-            System.out.print("Pizda nad głową - " + ClientTest.class.getSimpleName() + ": " + e.getMessage());
+            System.out.print("Brzydkie slowo :(- " + ClientTest.class.getSimpleName() + ": " + e.getMessage());
         }
     }
 }
