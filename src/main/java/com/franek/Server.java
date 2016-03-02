@@ -3,6 +3,7 @@ package com.franek;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Server {
@@ -25,17 +26,36 @@ public class Server {
 		// oczekiwanie na polaczenie i tworzenie gniazda sieciowego
 		System.out.println("Nasluchuje: " + this.serv);
 
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						for (ClientThread clientThread : socketList) {
+							synchronized (this) {
+								String date = new Date().toString();
+								clientThread.outp.println(date);
+								clientThread.outp.flush();
+								System.out.println("Sender: " + date);
+							}
+					}
+					Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+
 		while (true) {
 			this.sock = serv.accept();
+			synchronized (this) {
+				ClientThread thread = new ClientThread(this.sock, socketList);
+				thread.start();
 
-			ClientThread thread = new ClientThread(this.sock, socketList);
-			thread.start();
-
-			socketList.add(thread);
+				socketList.add(thread);
+			}
 		}
-
-		//System.out.println("Jest polaczenie: " + this.sock);
 	}
-
-
 }

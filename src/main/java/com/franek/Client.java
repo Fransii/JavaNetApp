@@ -13,7 +13,7 @@ public class Client {
 	public PrintWriter outp;
 
 	public String nickName;
-
+	String tekst = "";
 	public void connect() throws IOException {
 		// nawiazanie polaczenia z serwerem
 		sock = new Socket(HOST, PORT);
@@ -29,7 +29,7 @@ public class Client {
 	}
 
 	public void communication() throws IOException {
-		String tekst = "";
+
 
 		System.out.println("Whats your nickname ? :");
 		this.nickName = this.klaw.readLine();
@@ -38,18 +38,42 @@ public class Client {
 			// komunikacja - czytanie danych z klawiatury i przekazywanie ich do
 			// strumienia
 
-			System.out.print("<Wysylamy (" + this.nickName + "):> ");
-			String str = this.klaw.readLine();
-			tekst = str;
-			this.outp.println(str);
-			this.outp.flush();
-			
-			String str1;
-			str = this.inp.readLine();
-			if (str != "") {
-				System.out.println("<Nadeszlo:> " + str + " od : " + this.sock.getInetAddress());
-			}
-			
+			Thread sender = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (true) {
+						String str = null;
+						try {
+							str = klaw.readLine();
+							outp.println(str);
+							outp.flush();
+							System.out.println("<Wysyłamy:> " + str);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+			sender.start();
+
+
+			Thread reader = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					String str = null;
+					try {
+						while ((str = inp.readLine()) != null) {
+							System.out.println("<Nadeszlo:> " + str);
+							tekst = str;
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+			});
+			reader.start();
+			break;
 		} while (tekst.compareTo("END") != 0);
 	}
 

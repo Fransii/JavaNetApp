@@ -10,7 +10,7 @@ public class ClientTest {
             client.connect();
             client.makeBufferedReader();
             client.communication();
-            client.closeConnection();
+            //client.closeConnection();
         } catch (IOException e) {
             System.out.print("Brzydkie slowo :(- " + ClientTest.class.getSimpleName() + ": " + e.getMessage());
         }
