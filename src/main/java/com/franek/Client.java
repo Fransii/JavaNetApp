@@ -1,5 +1,7 @@
 package com.franek;
 
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.*;
 
@@ -37,11 +39,18 @@ public class Client {
 		do {
 			// komunikacja - czytanie danych z klawiatury i przekazywanie ich do
 			// strumienia
+			JSONObject msg = new JSONObject();
 
 			System.out.print("<Wysylamy (" + this.nickName + "):> ");
 			String str = this.klaw.readLine();
+
+			msg.put("msg",str);
+			msg.put("nickName",nickName);
+
+			String msgJ = msg.toString();
+
 			tekst = str;
-			this.outp.println(str);
+			this.outp.println(msgJ);
 			this.outp.flush();
 			
 			String str1;
