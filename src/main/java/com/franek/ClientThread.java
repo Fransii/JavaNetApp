@@ -24,9 +24,6 @@ public class ClientThread extends Thread {
     public PrintWriter outp;
     public String clientName;
 
-    public boolean firstConnect = true;
-
-
     private final List<ClientThread> threads;
 
 
@@ -79,40 +76,32 @@ public class ClientThread extends Thread {
         do {
             // komunikacja - czytanie danych ze strumienia,
             str = this.inp.readLine();
+            msg = new JSONObject(str);
 
-            msg = new JSONObject(str); // tu wypierdala null pointer exception jak ktos przysle END
-
-
-                if (!Server.usersList.contains(msg.getString("nickName"))) {
-
-                    try {
-                        this.clientName = msg.getString("nickName");
-                        Server.usersList.add(msg.getString("nickName"));
-                        Server.userInfo.put(msg.getString("nickName"), this.sock.getInetAddress());
-                        System.out.println(Server.userInfo);
-                    } catch (NullPointerException eee) {
-                    }
+            if (!Server.usersList.contains(msg.getString("nickName"))) {
+                try {
+                    this.clientName = msg.getString("nickName");
+                    Server.usersList.add(msg.getString("nickName"));
+                    Server.userInfo.put(msg.getString("nickName"), this.sock.getInetAddress());
+                    System.out.println(Server.userInfo);
+                    } catch (NullPointerException eee){}
                 }
 
-                if (str != "") {
-                    System.out.println("<Nadeszlo:> " + msg.get("msg") + " od : " + msg.get("nickName") + this.sock.getInetAddress());
-                }
-                tekst = str;
+            if (str != "")
+            {
+                System.out.println("<Nadeszlo:> " + msg.get("msg") + " od : " + msg.get("nickName") + this.sock.getInetAddress());
+            }
+            tekst = msg.getString("msg");
 
-                if (str.compareTo("!USERS") != 0) {
-                    sendUserList();
-                }
-
-
+            if (str.compareTo("!USERS") != 0)
+            {
+                sendUserList();
+            }
         } while (tekst.compareTo("END") != 0);
-
-
-        System.out.println("KOniec");
     }
 
     public void closeConnection() throws IOException {
-        // zamykanie polaczenia
-        System.out.println("Polaczenie z " + this.sock.getInetAddress() + " zakończone !");
+        System.out.println("Polaczenie z " + this.clientName + "("+this.sock.getInetAddress() +")" + " zakończone !");
         this.inp.close();
         this.sock.close();
 
@@ -121,18 +110,13 @@ public class ClientThread extends Thread {
             if(Server.usersList.get(i).compareTo(this.clientName) != 0) {
             }else
             {
-                System.out.println("usuniety");
                 Server.usersList.remove(i);
             }
         }
-
-
     }
 
     @Override
     public void run() {
-
         init();
-
     }
 }
