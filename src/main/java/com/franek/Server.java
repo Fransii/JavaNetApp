@@ -16,7 +16,7 @@ public class Server {
 
 	public static List<String> usersList = new  ArrayList<String>();
 	public static Map userInfo = new HashMap();
-
+//
 
 	public void makeServerSocket() throws IOException {
 		// tworzenie gniazda serwerowego

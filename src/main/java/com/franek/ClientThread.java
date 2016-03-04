@@ -77,7 +77,7 @@ public class ClientThread extends Thread {
         String str;
         JSONObject msg;
         do {
-            // komunikacja - czytanie danych ze strumienia
+            // komunikacja - czytanie danych ze strumienia,
             str = this.inp.readLine();
 
             msg = new JSONObject(str); // tu wypierdala null pointer exception jak ktos przysle END

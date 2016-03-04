@@ -26,6 +26,7 @@ public class Client {
 	{
 		//this.outp.println("!USERS");
 		//this.outp.flush();
+		//
 	}
 
 	public void connect() throws IOException {
