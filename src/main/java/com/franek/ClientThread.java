@@ -1,12 +1,18 @@
 package com.franek;
 
+import org.json.JSONObject;
+import sun.security.util.Length;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by dbialy on 01.03.16.
@@ -16,6 +22,10 @@ public class ClientThread extends Thread {
     public Socket sock;
     public BufferedReader inp;
     public PrintWriter outp;
+    public String clientName;
+
+    public boolean firstConnect = true;
+
 
     private final List<ClientThread> threads;
 
@@ -30,7 +40,7 @@ public class ClientThread extends Thread {
             this.makeBufferedReader();
             this.makeBufferedPrinter();
             this.communication();
-            this.closeConnection(null);
+            this.closeConnection();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,30 +59,80 @@ public class ClientThread extends Thread {
         this.inp = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
     }
 
-    public void communication() throws IOException {
+    //Send list with active users to client.
+    public void sendUserList()
+    {
+        String stringUserList = new String();
+        for(int i =0; i<Server.usersList.size();i++)
+        {
+            stringUserList = stringUserList + " " + Server.usersList.get(i);
+        }
+
+        System.out.println(stringUserList);
+        this.outp.println(stringUserList);
+        this.outp.flush();
+    }
+    public void communication() throws IOException, NullPointerException {
         String tekst = "";
+        String str;
+        JSONObject msg;
         do {
             // komunikacja - czytanie danych ze strumienia
-            String str;
             str = this.inp.readLine();
-            if (str != "") {
-                System.out.println("<Nadeszlo:> " + str + " od : " + this.sock.getInetAddress());
-            }
-            tekst = str;
-            this.outp.println("Odsylam: " + "\"" + str + "\"" );
-            this.outp.flush();
+
+            msg = new JSONObject(str); // tu wypierdala null pointer exception jak ktos przysle END
+
+
+                if (!Server.usersList.contains(msg.getString("nickName"))) {
+
+                    try {
+                        this.clientName = msg.getString("nickName");
+                        Server.usersList.add(msg.getString("nickName"));
+                        Server.userInfo.put(msg.getString("nickName"), this.sock.getInetAddress());
+                        System.out.println(Server.userInfo);
+                    } catch (NullPointerException eee) {
+                    }
+                }
+
+                if (str != "") {
+                    System.out.println("<Nadeszlo:> " + msg.get("msg") + " od : " + msg.get("nickName") + this.sock.getInetAddress());
+                }
+                tekst = str;
+
+                if (str.compareTo("!USERS") != 0) {
+                    sendUserList();
+                }
+
+
         } while (tekst.compareTo("END") != 0);
+
+
+        System.out.println("KOniec");
     }
 
-    public void closeConnection(ServerSocket serv) throws IOException {
+    public void closeConnection() throws IOException {
         // zamykanie polaczenia
         System.out.println("Polaczenie z " + this.sock.getInetAddress() + " zakończone !");
         this.inp.close();
         this.sock.close();
+
+        for(int i =0; i<Server.usersList.size();i++)
+        {
+            if(Server.usersList.get(i).compareTo(this.clientName) != 0) {
+            }else
+            {
+                System.out.println("usuniety");
+                Server.usersList.remove(i);
+            }
+        }
+
+
     }
 
     @Override
     public void run() {
+
         init();
+
     }
 }

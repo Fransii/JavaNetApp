@@ -3,6 +3,8 @@ package com.franek;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 public class Server {
@@ -11,6 +13,10 @@ public class Server {
 	ServerSocket serv;
 	Socket sock;
 	List<ClientThread> socketList = new ArrayList<ClientThread>();
+
+	public static List<String> usersList = new  ArrayList<String>();
+	public static Map userInfo = new HashMap();
+
 
 	public void makeServerSocket() throws IOException {
 		// tworzenie gniazda serwerowego
