@@ -23,9 +23,10 @@ public class ClientThread extends Thread {
     public BufferedReader inp;
     public PrintWriter outp;
     public String clientName;
+    public String deliveryName;
+    public Socket deliverySocket;
 
     private final List<ClientThread> threads;
-
 
     public ClientThread(Socket socket, List<ClientThread> socketList)
     {
@@ -43,31 +44,52 @@ public class ClientThread extends Thread {
             e.printStackTrace();
         }
     }
-
-    public boolean isConnection() {
-        return this.sock.isConnected();
-    }
-
+    // Make buffered printer to send msg.
     public void makeBufferedPrinter() throws IOException
     {
         this.outp = new PrintWriter(this.sock.getOutputStream());
     }
-
+    // Make buffered writer to get msg.
     public void makeBufferedReader() throws IOException
     {
-        // tworzenie strumienia danych pobieranych z gniazda sieciowego
         this.inp = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
     }
 
+    // Send message from one user by server to destination host.
+    public void sendMsgTo(String completeMsg,String msg)
+    {
+        try {
+            //Set new socket of destination user
+            this.outp = new PrintWriter(this.deliverySocket.getOutputStream());
+        }catch(IOException ww){
+            System.out.println("blad 1");
+        }
+        if (msg.compareTo(" ") == 0)
+        {   // Send empty msg.
+            this.outp.println(msg);
+            this.outp.flush();
+        }else
+        {   // Send complete msg.
+            this.outp.println(completeMsg);
+            this.outp.flush();
+        }
+        try {
+            //Set old socket
+            this.outp = new PrintWriter(this.sock.getOutputStream());
+        }catch(IOException rr){
+            System.out.println("blad 2");
+        }
+    }
     //Send list with active users to client.
     public void sendUserList()
-    {
+    {   // Build list of users.
         String stringUserList = new String();
         for(int i =0; i<Server.usersList.size();i++)
         {
             stringUserList = stringUserList + " " + Server.usersList.get(i);
         }
 
+        // Send rdy list.
         System.out.println(stringUserList);
         this.outp.println(stringUserList);
         this.outp.flush();
@@ -81,12 +103,12 @@ public class ClientThread extends Thread {
             str = this.inp.readLine();
             msg = new JSONObject(str);
 
+            // Check if user exist on servers ACTIVE users list.
             if (!Server.usersList.contains(msg.getString("nickName"))) {
                 try {
                     this.clientName = msg.getString("nickName");
                     Server.usersList.add(msg.getString("nickName"));
-                    Server.userInfo.put(msg.getString("nickName"), this.sock.getInetAddress());
-                    System.out.println(Server.userInfo);
+                    Server.userInfo.put(msg.getString("nickName"), this.sock);
                     } catch (NullPointerException eee){}
                 }
 
@@ -94,22 +116,35 @@ public class ClientThread extends Thread {
             {
                 System.out.println("<Nadeszlo:> " + msg.get("msg") + " od : " + msg.get("nickName") + this.sock.getInetAddress());
             }
+
+            // Variable for check what to do.
             tekst = msg.getString("msg");
 
-            if (str.compareTo("!USERS") != 0)
+            // Set destination user info
+            this.deliveryName = msg.getString("deliveryHost");
+            this.deliverySocket = (Socket)Server.userInfo.get(deliveryName);
+
+            // Select what to do.
+            if (tekst.compareTo("!USERS") == 0)
             {
                 sendUserList();
+            }else
+            {
+                sendMsgTo(msg.getString("nickName")+" napisal: "+tekst,tekst);
             }
+            // Check if user want to close connection.
         } while (tekst.compareTo("!END") != 0);
     }
 
-    //Close connection between server and user
-    public void closeConnection() throws IOException {
+    //Close connection between server and user.
+    public void closeConnection() throws IOException
+    {
         System.out.println("Polaczenie z " + this.clientName + "("+this.sock.getInetAddress() +")" + " zakończone !");
+        // Close buffered reader, socket.
         this.inp.close();
         this.sock.close();
 
-        // Remove user nickname from list on close connection
+        // Remove user nickname from server active users list on close connection.
         for(int i =0; i<Server.usersList.size();i++)
         {
             if(Server.usersList.get(i).compareTo(this.clientName) != 0) {
