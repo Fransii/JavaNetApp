@@ -89,7 +89,7 @@ public class ClientThread extends Thread {
                     System.out.println(Server.userInfo);
                     } catch (NullPointerException eee){}
                 }
-
+            //
             if (str != "")
             {
                 System.out.println("<Nadeszlo:> " + msg.get("msg") + " od : " + msg.get("nickName") + this.sock.getInetAddress());
