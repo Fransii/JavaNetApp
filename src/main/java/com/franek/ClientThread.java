@@ -27,7 +27,8 @@ public class ClientThread extends Thread {
     private final List<ClientThread> threads;
 
 
-    public ClientThread(Socket socket, List<ClientThread> socketList) {
+    public ClientThread(Socket socket, List<ClientThread> socketList)
+    {
         this.sock = socket;
         this.threads = socketList;
     }
@@ -47,11 +48,13 @@ public class ClientThread extends Thread {
         return this.sock.isConnected();
     }
 
-    public void makeBufferedPrinter() throws IOException {
+    public void makeBufferedPrinter() throws IOException
+    {
         this.outp = new PrintWriter(this.sock.getOutputStream());
     }
 
-    public void makeBufferedReader() throws IOException {
+    public void makeBufferedReader() throws IOException
+    {
         // tworzenie strumienia danych pobieranych z gniazda sieciowego
         this.inp = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
     }
@@ -69,12 +72,12 @@ public class ClientThread extends Thread {
         this.outp.println(stringUserList);
         this.outp.flush();
     }
+    // Main communication between server and user
     public void communication() throws IOException, NullPointerException {
         String tekst = "";
         String str;
         JSONObject msg;
         do {
-            // komunikacja - czytanie danych ze strumienia,
             str = this.inp.readLine();
             msg = new JSONObject(str);
 
@@ -97,14 +100,16 @@ public class ClientThread extends Thread {
             {
                 sendUserList();
             }
-        } while (tekst.compareTo("END") != 0);
+        } while (tekst.compareTo("!END") != 0);
     }
 
+    //Close connection between server and user
     public void closeConnection() throws IOException {
         System.out.println("Polaczenie z " + this.clientName + "("+this.sock.getInetAddress() +")" + " zakończone !");
         this.inp.close();
         this.sock.close();
 
+        // Remove user nickname from list on close connection
         for(int i =0; i<Server.usersList.size();i++)
         {
             if(Server.usersList.get(i).compareTo(this.clientName) != 0) {

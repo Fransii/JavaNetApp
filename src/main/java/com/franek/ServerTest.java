@@ -6,7 +6,6 @@ public class ServerTest {
 
 	public static void main(String args[]) throws IOException {
 		try {
-
 			Server server = new Server();
 			while (true) {
 				try {
@@ -15,7 +14,7 @@ public class ServerTest {
 				} catch (IOException e) {}
 			}
 		} catch (NullPointerException e) {
-			System.out.println("DUPA");
+			System.out.println("Problem with make server socket ... ");
 		}
 	}
 

@@ -12,23 +12,32 @@ public class Server {
 
 	ServerSocket serv;
 	Socket sock;
+
+	//List of all sockets
 	List<ClientThread> socketList = new ArrayList<ClientThread>();
 
+	//List of users nicknames
 	public static List<String> usersList = new  ArrayList<String>();
-	public static Map userInfo = new HashMap();
-//
 
-	public void makeServerSocket() throws IOException {
-		// tworzenie gniazda serwerowego
+	//List of tuples: nickname : socket
+	public static Map userInfo = new HashMap();
+
+	// Make ServerSocket
+	public void makeServerSocket() throws IOException
+	{
 		this.serv = new ServerSocket(PORT);
 	}
-	// TO DO
-	public ServerSocket returnServerSocket() {
+
+	// TODO return server socket
+	public ServerSocket returnServerSocket()
+	{
 		return this.serv;
 	}
 
-	public void makeSocket() throws IOException {
-		// oczekiwanie na polaczenie i tworzenie gniazda sieciowego
+	// Wait for client connection
+	// After connected to server - make socket
+	public void makeSocket() throws IOException
+	{
 		System.out.println("Nasluchuje: " + this.serv);
 
 		while (true) {
@@ -39,8 +48,6 @@ public class Server {
 
 			socketList.add(thread);
 		}
-
-		//System.out.println("Jest polaczenie: " + this.sock);
 	}
 
 
