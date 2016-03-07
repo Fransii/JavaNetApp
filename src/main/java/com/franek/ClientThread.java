@@ -130,7 +130,8 @@ public class ClientThread extends Thread {
                 sendUserList();
             }else
             {
-                sendMsgTo(msg.getString("nickName")+" napisal: "+tekst,tekst);
+                if(tekst.compareTo("!END") != 0){
+                sendMsgTo(msg.getString("nickName")+" napisal: "+tekst,tekst);}
             }
             // Check if user want to close connection.
         } while (tekst.compareTo("!END") != 0);
@@ -156,7 +157,8 @@ public class ClientThread extends Thread {
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         init();
     }
 }

@@ -14,6 +14,8 @@ public class Client {
 	public BufferedReader inp;
 	public PrintWriter outp;
 
+	public ReceiveMessages receiveMsg;
+
 	public String nickName;
 	public String deliveryHost;
 
@@ -88,6 +90,9 @@ public class Client {
 		System.out.println("Hello " + this.nickName + " !");
 
 		//getUsersList();
+		this.receiveMsg = new ReceiveMessages(this.inp);
+		this.receiveMsg.start();
+
 
 		do {
 			JSONObject msg1 = new JSONObject();
@@ -132,13 +137,18 @@ public class Client {
 				this.outp.flush();
 			}
 
+			/*
 			//Reading info from server.
 			str = this.inp.readLine();
 			if (str != "") {
 				System.out.println(str);
 			}
+			*/
 			// Check if user want to close connection.
 		} while (tekst.compareTo("!END") != 0);
+
+		// End reciveMessages Thread.
+		receiveMsg.stopThread();
 	}
 
 	//Close connection to server, buffered reader&writer,  end application.
@@ -149,7 +159,6 @@ public class Client {
 		try{
 			System.in.read();
 		} catch (IOException e1) {}
-
 		// Close buffered reader&writer, socket
 		this.klaw.close();
 		this.outp.close();
