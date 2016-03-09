@@ -117,6 +117,9 @@ public class ClientForGUI
                 outp.println(msg1J);
                 outp.flush();
 
+                clientGUI.messagesText.append(nickName + " : " + str + "\n");
+                clientGUI.textToSend.setText("");
+
             }
         });
     }
