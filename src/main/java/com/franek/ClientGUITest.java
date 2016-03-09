@@ -15,9 +15,9 @@ import java.io.IOException;
 public class ClientGUITest {
     public static void main(String[] args) {
 
-        ClientForGUI clientForGUI = new ClientForGUI();
+        final ClientForGUI clientForGUI = new ClientForGUI();
 
-        loginGUI loginGUI = new loginGUI();
+        final loginGUI loginGUI = new loginGUI();
 
         loginGUI.frame.addWindowListener(new WindowAdapter() {
 
@@ -36,9 +36,9 @@ public class ClientGUITest {
             public void actionPerformed(ActionEvent e) {
 
                 clientForGUI.nickName = loginGUI.nickNameField.getText();
-
-                ClientGUI clientGUI = new ClientGUI();
-                ChangeFriendNickNameGUI changeFriendNickNameGUI = new ChangeFriendNickNameGUI();
+                loginGUI.frame.setVisible(false);
+                final ClientGUI clientGUI = new ClientGUI();
+                final ChangeFriendNickNameGUI changeFriendNickNameGUI = new ChangeFriendNickNameGUI();
                 changeFriendNickNameGUI.frame.setVisible(false);
                 clientGUI.changeFriendButton.addActionListener(new ActionListener() {
                     @Override
@@ -82,8 +82,7 @@ public class ClientGUITest {
                     clientForGUI.communication();
                     clientForGUI.getUsersList();
 
-                } catch (IOException bb) {
-                }
+                } catch (IOException bb) {}
 
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override

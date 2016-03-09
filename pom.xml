@@ -17,7 +17,7 @@
                     <execution>
                         <id>build-client</id>
                         <configuration>
-                            <mainClass>com.franek.ClientTest</mainClass>
+                            <mainClass>com.franek.ClientGUITest</mainClass>
                             <attachToBuild>true</attachToBuild>
                             <classifier>onejar</classifier>
                             <filename>client.jar</filename>
