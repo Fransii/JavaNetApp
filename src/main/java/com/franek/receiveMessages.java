@@ -38,6 +38,7 @@ public class ReceiveMessages extends Thread {
                 if(this.str != null)
                     {
                         System.out.println(this.str);
+
                     }
             }
         }

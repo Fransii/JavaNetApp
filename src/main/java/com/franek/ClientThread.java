@@ -58,6 +58,8 @@ public class ClientThread extends Thread {
     // Send message from one user by server to destination host.
     public void sendMsgTo(String completeMsg,String msg)
     {
+        JSONObject mss = new JSONObject();
+        mss.put("whatToDo","message");
         try {
             //Set new socket of destination user
             this.outp = new PrintWriter(this.deliverySocket.getOutputStream());
@@ -66,11 +68,15 @@ public class ClientThread extends Thread {
         }
         if (msg.compareTo(" ") == 0)
         {   // Send empty msg.
-            this.outp.println(msg);
+            mss.put("msg",msg);
+            String mssJ1 = mss.toString();
+            this.outp.println(mssJ1);
             this.outp.flush();
         }else
         {   // Send complete msg.
-            this.outp.println(completeMsg);
+            mss.put("msg",completeMsg);
+            String mssJ2 = mss.toString();
+            this.outp.println(mssJ2);
             this.outp.flush();
         }
         try {
@@ -84,14 +90,19 @@ public class ClientThread extends Thread {
     public void sendUserList()
     {   // Build list of users.
         String stringUserList = new String();
+
+        JSONObject mss = new JSONObject();
+
         for(int i =0; i<Server.usersList.size();i++)
         {
             stringUserList = stringUserList + " " + Server.usersList.get(i);
         }
+        mss.put("msg", stringUserList);
+        mss.put("whatToDo", "!USERS");
 
+        String mssJ = mss.toString();
         // Send rdy list.
-        System.out.println(stringUserList);
-        this.outp.println(stringUserList);
+        this.outp.println(mssJ);
         this.outp.flush();
     }
     // Main communication between server and user
