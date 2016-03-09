@@ -1,10 +1,13 @@
 package com.franek;
 
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONObject;
 
+import javax.sound.sampled.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+
 
 /**
  * Created by franciszekdanes on 09.03.2016.
@@ -15,7 +18,30 @@ public class ReceiveMessagesGUI extends Thread{
     public String str;
     public static boolean stopFlag;
 
+    public String soundName = "getMsgSound.wav";
+
+
     public ClientGUI clientGUI;
+
+    public void playSound()
+    {
+        try {
+            // Open an audio input stream.
+            File soundFile = new File(soundName);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.start();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public ReceiveMessagesGUI(BufferedReader inpp,ClientGUI clientGUI)
@@ -49,8 +75,10 @@ public class ReceiveMessagesGUI extends Thread{
                     mss = new JSONObject(str);
                     if (mss.getString("whatToDo").compareTo("!USERS") == 0)
                         this.clientGUI.activeUsersList.setText(mss.getString("msg").replace(" ","\n"));
-                    else
+                    else{
                         this.clientGUI.messagesText.append(mss.getString("msg")+"\n");
+                        playSound();
+                    }
                 }
             }
         }

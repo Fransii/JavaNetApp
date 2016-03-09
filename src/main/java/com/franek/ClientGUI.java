@@ -3,6 +3,7 @@ package com.franek;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.event.*;
 
 /**
@@ -49,6 +50,28 @@ public class ClientGUI
 
         panel.add(changeFriendButton);
 
+        DefaultCaret caret = (DefaultCaret)messagesText.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+
+        textToSend.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    sendButton.doClick();
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    textToSend.setText("");
+                    //textToSend.setCaretPosition(0);
+                }
+            }
+        });
 
         frame.add(panel);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

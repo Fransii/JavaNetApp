@@ -36,6 +36,8 @@ public class loginGUI
         frame.add(panel);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        frame.getRootPane().setDefaultButton(enterNickName);
+
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

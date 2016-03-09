@@ -35,7 +35,7 @@ public class ChangeFriendNickNameGUI {
         panel.add(nickNameField,"wrap");
         panel.add(enterNickName,centerConstraint);
 
-
+        frame.getRootPane().setDefaultButton(enterNickName);
 
         frame.add(panel);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

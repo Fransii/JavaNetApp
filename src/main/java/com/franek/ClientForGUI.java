@@ -3,6 +3,7 @@ package com.franek;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -107,9 +108,9 @@ public class ClientForGUI
                 JSONObject msg1 = new JSONObject();
 
                 // Building JSON object to send.
-                msg1.put("msg",str);
-                msg1.put("nickName",nickName);
-                msg1.put("deliveryHost",deliveryHost);
+                msg1.put("msg", str);
+                msg1.put("nickName", nickName);
+                msg1.put("deliveryHost", deliveryHost);
 
                 // Convert JSON object to string.
                 String msg1J = msg1.toString();
@@ -119,6 +120,7 @@ public class ClientForGUI
 
                 clientGUI.messagesText.append(nickName + " : " + str + "\n");
                 clientGUI.textToSend.setText("");
+
 
             }
         });
