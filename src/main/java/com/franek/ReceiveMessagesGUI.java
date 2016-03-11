@@ -1,24 +1,23 @@
 package com.franek;
 
 import org.json.JSONObject;
-
 import javax.sound.sampled.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
+import java.io.InputStream;
 
 /**
  * Created by franciszekdanes on 09.03.2016.
  */
+
 public class ReceiveMessagesGUI extends Thread{
 
     public BufferedReader inp;
     public String str;
     public static boolean stopFlag;
 
-    public String soundName = "getMsgSound.wav";
+    public String soundName = "/getMsgSound.wav";
 
 
     public ClientGUI clientGUI;
@@ -27,8 +26,8 @@ public class ReceiveMessagesGUI extends Thread{
     {
         try {
             // Open an audio input stream.
-            File soundFile = new File(soundName);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+            InputStream in = getClass().getResourceAsStream(soundName);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(in);
             // Get a sound clip resource.
             Clip clip = AudioSystem.getClip();
             // Open audio clip and load samples from the audio input stream.

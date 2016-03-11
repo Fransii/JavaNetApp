@@ -1,7 +1,5 @@
 package com.franek;
 
-import org.json.JSONObject;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +10,7 @@ import java.io.IOException;
 /**
  * Created by franciszekdanes on 09.03.2016.
  */
+
 public class ClientGUITest {
     public static void main(String[] args) {
 

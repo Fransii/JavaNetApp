@@ -2,14 +2,12 @@ package com.franek;
 
 import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by franciszekdanes on 09.03.2016.
  */
+
 public class ChangeFriendNickNameGUI {
 
 

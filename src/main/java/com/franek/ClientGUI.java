@@ -1,6 +1,5 @@
 package com.franek;
 
-
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -9,6 +8,7 @@ import java.awt.event.*;
 /**
  * Created by franciszekdanes on 07.03.2016.
  */
+
 public class ClientGUI
 {
     public JFrame frame = new JFrame("JavaNetApp");

@@ -1,9 +1,6 @@
 package com.franek;
 
 import org.json.JSONObject;
-
-import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -15,10 +12,11 @@ import java.net.Socket;
 /**
  * Created by franciszekdanes on 09.03.2016.
  */
+
 public class ClientForGUI
 {
     public static final int PORT = 50007;
-    public static final String HOST = "127.0.0.1";
+    public static final String HOST = "155.94.210.248";
 
     public Socket sock;
     public BufferedReader klaw;

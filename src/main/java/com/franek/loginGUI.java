@@ -2,12 +2,12 @@ package com.franek;
 
 import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
 
 /**
  * Created by franciszekdanes on 09.03.2016.
  */
+
 public class loginGUI
 {
     public JFrame frame = new JFrame("JavaNetApp");
